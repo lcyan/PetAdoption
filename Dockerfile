@@ -7,7 +7,7 @@ COPY src ./src
 
 RUN mvn clean package -DskipTests -Dmaven.repo.local=/root/.m2/repository
 
-FROM eclipse-temurin:8-jre-alpine
+FROM eclipse-temurin:8-jre
 
 WORKDIR /app
 

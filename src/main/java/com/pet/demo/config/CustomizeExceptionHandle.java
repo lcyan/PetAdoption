@@ -1,6 +1,8 @@
 package com.pet.demo.config;
 
 import com.pet.demo.exception.CustomizeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,10 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 public class CustomizeExceptionHandle {
+    private static final Logger logger = LoggerFactory.getLogger(CustomizeExceptionHandle.class);
+
     @ExceptionHandler(Exception.class)
     ModelAndView handle(HttpServletRequest request, Throwable e, Model model,
                         HttpServletResponse response) {
 
+            logger.error("Exception occurred: ", e);
 
             if(e instanceof CustomizeException){
                 model.addAttribute("message",e.getMessage());
