@@ -24,13 +24,19 @@ public class CustomizeErrorController implements ErrorController {
                                   Model model){
         HttpStatus status=getStatus(request);
 
-        if (!status.is4xxClientError()) {
-        } else {
-            model.addAttribute("message","请求错误，换个姿势");
+        // 获取异常信息
+        Throwable exception = (Throwable) request.getAttribute("javax.servlet.error.exception");
+        String errorMessage = "服务器冒烟了，稍后试试！";
+
+        if (exception != null) {
+            errorMessage = "异常: " + exception.getClass().getName() + " - " + exception.getMessage();
+        } else if (status.is4xxClientError()) {
+            errorMessage = "请求错误，换个姿势";
+        } else if(status.is5xxServerError()){
+            errorMessage = "服务异常，请稍后再试";
         }
-        if(status.is5xxServerError()){
-            model.addAttribute("message","服务异常，请稍后再试");
-        }
+
+        model.addAttribute("message", errorMessage);
         return  new ModelAndView("error");
     }
 
