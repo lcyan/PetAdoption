@@ -79,6 +79,9 @@ public class IndexController {
     @GetMapping("/show")
     public String showPet(Model model){
         List<Pet> pets=petService.findPet("未领养");
+        if (pets == null) {
+            pets = new java.util.ArrayList<>();
+        }
         model.addAttribute("pets",pets);
         return "show";
     }
